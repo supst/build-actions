@@ -217,6 +217,12 @@ jobs:
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
 
+    - name: Bark信息通知
+      run: |
+        if [ -n "${{ secrets.PUSH_TOKEN }}" ]; then
+          curl -X POST -d "device_key=${{ secrets.PUSH_TOKEN }}&body=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件顺利编译完成了" ${{ secrets.PUSH_SERVER }}
+        fi
+
     - name: Telegram或pushplus信息通知
       if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
       run: |
